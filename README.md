@@ -129,20 +129,4 @@ python -c "from monai.bundle import download; download('lung_nodule_ct_detection
 
 ---
 
-## 향후 계획
-
-- [ ] Lung Segmentation 재학습 (목표 Dice 0.7+)
-- [ ] Findings Classifier 악성도 분류 실구현
-- [ ] DICOM SR 출력 지원
-- [ ] FHIR / HL7 통합
-
----
-
-## 프로젝트 위치
-
-본 프로젝트는 **㈜메디칼스탠다드 차세대 PACS 플랫폼 R&D** (RS-2024-00470062) 1차년도의 선행 PoC입니다.
-RAG 기반 리포트 생성 파이프라인(Agent 4)을 검증하기 위한 독립형 데모입니다.
-
----
-
 *Developed as part of 메디칼스탠다드 R&D / Upstage Solar API PoC*
