@@ -44,6 +44,16 @@ env/
 # Data (large files)
 data/raw/
 data/processed/
+data/LIDC-IDRI/
+data/LIDC-preprocessed/
+data/LIDC-preprocessed-v2/
+data/Task06_Lung/
+data/auxneg-preprocessed/
+data/lunit_clean/
+data/dicom_data/
+data/dicom_clean/
+data/dicom_clean_full/
+data/dicom_clean_ct_unknown/
 data/dicom_storage/*
 data/dicom_output/*
 data/chroma_db/*
@@ -51,9 +61,14 @@ data/chroma_db/*
 !data/**/README.md
 
 # Models (large files)
+models/lung_seg/
+models/nodule_det/
+models/luna16_retinanet/
 models/**/*.pth
 models/**/*.pt
 models/**/*.onnx
+models/**/*.bin
+models/**/*.safetensors
 !models/**/.gitkeep
 !models/**/README.md
 
@@ -81,3 +96,10 @@ htmlcov/
 
 # MyPy
 .mypy_cache/
+
+# Python version
+.python-version
+
+# Misc
+plan.docx
+to_delete_later/

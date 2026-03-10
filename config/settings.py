@@ -11,7 +11,7 @@ from typing import Optional
 class Settings(BaseSettings):
     """Application settings"""
     
-    # Solar API (OpenRouter)
+    # Solar API (OpenRouter) - for report generation
     solar_api_key: Optional[str] = Field(default=None, env="SOLAR_API_KEY")
     solar_api_endpoint: str = Field(
         default="https://openrouter.ai/api/v1",
@@ -21,9 +21,16 @@ class Settings(BaseSettings):
         default="upstage/solar-pro-3:free",
         env="SOLAR_MODEL"
     )
-    solar_embedding_model: str = Field(
-        default="upstage/solar-embedding-1-large",
-        env="SOLAR_EMBEDDING_MODEL"
+
+    # Upstage Embedding API
+    upstage_api_key: Optional[str] = Field(default=None, env="UPSTAGE_API_KEY")
+    upstage_api_endpoint: str = Field(
+        default="https://api.upstage.ai/v1/solar",
+        env="UPSTAGE_API_ENDPOINT"
+    )
+    upstage_embedding_model: str = Field(
+        default="solar-embedding-1-large",
+        env="UPSTAGE_EMBEDDING_MODEL"
     )
     
     # Mock modes
@@ -48,11 +55,11 @@ class Settings(BaseSettings):
     findings_model_path: Optional[Path] = None
     
     # Processing settings
-    target_spacing: tuple = (1.0, 1.0, 1.5)  # mm
-    roi_size: tuple = (96, 96, 96)
+    target_spacing: tuple = (1.0, 1.0, 1.0)  # mm (isotropic)
+    roi_size: tuple = (128, 128, 128)
     
     # Threshold settings
-    nodule_detection_threshold: float = Field(default=0.7, ge=0.0, le=1.0)
+    nodule_detection_threshold: float = Field(default=0.15, ge=0.0, le=1.0)
     nodule_reporting_threshold: float = Field(default=0.75, ge=0.0, le=1.0)
     
     # Logging
@@ -80,8 +87,8 @@ class Settings(BaseSettings):
     
     @property
     def should_use_real_embedding(self) -> bool:
-        """Solar Embedding 실제 사용 여부"""
-        return bool(self.solar_api_key) and not self.use_mock_embedding
+        """Upstage Embedding 실제 사용 여부"""
+        return bool(self.upstage_api_key) and not self.use_mock_embedding
 
 
 # Global settings instance

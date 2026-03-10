@@ -4,7 +4,7 @@ Pydantic schemas for PACS AI Agent
 Evidence-first 구조: 모든 임상 문장은 Vision evidence에 연결
 """
 from typing import Optional, List, Dict, Any, Literal
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, validator
 from datetime import datetime
 
 
@@ -65,6 +65,7 @@ class StructuredFindings(BaseModel):
 
 class ModelVersioning(BaseModel):
     """모델 버전 및 threshold 정보"""
+    model_config = ConfigDict(protected_namespaces=())
     model_version: str
     pipeline_version: str
     thresholds: Dict[str, float]
@@ -161,6 +162,7 @@ class KeyFlags(BaseModel):
 
 class AuditInfo(BaseModel):
     """Audit metadata"""
+    model_config = ConfigDict(protected_namespaces=())
     model_version: str
     pipeline_version: str
     solar_prompt_version: str

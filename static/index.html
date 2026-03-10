@@ -509,6 +509,202 @@
             display: block;
         }
 
+        .overlay-layout {
+            display: grid;
+            grid-template-columns: minmax(320px, 1fr) 320px;
+            gap: 1rem;
+        }
+
+        .overlay-panel {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .overlay-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .overlay-control label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #475569;
+            margin-bottom: 0.3rem;
+        }
+
+        .overlay-control input[type="range"] {
+            width: 100%;
+        }
+
+        .overlay-control select {
+            width: 100%;
+            padding: 0.4rem 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            color: #334155;
+            font-size: 0.8rem;
+        }
+
+        .overlay-control input[type="checkbox"] {
+            margin-right: 0.4rem;
+            accent-color: var(--primary);
+        }
+
+        .overlay-canvas-wrap {
+            width: 100%;
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #000;
+        }
+
+        #overlayCanvas {
+            display: block;
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            image-rendering: crisp-edges;
+        }
+
+        .overlay-status {
+            margin-top: 0.5rem;
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .overlay-list {
+            max-height: 520px;
+            overflow-y: auto;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .overlay-item {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.65rem;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .overlay-item:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .overlay-item.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+
+        .overlay-item-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.2rem;
+        }
+
+        .overlay-item-meta {
+            font-size: 0.74rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 980px) {
+            .overlay-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .insights-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .insight-panel {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .insight-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #334155;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .why-card-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .why-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+
+        .why-card-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 0.35rem;
+        }
+
+        .why-card-meta {
+            font-size: 0.74rem;
+            color: #64748b;
+            margin-bottom: 0.35rem;
+        }
+
+        .why-card ul {
+            margin: 0;
+            padding-left: 1rem;
+            color: #475569;
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+
+        .insight-note {
+            font-size: 0.8rem;
+            color: #475569;
+            line-height: 1.55;
+            white-space: pre-wrap;
+        }
+
+        .insight-badge {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 2px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .insight-badge.ok {
+            background: rgba(16, 185, 129, 0.16);
+            color: #047857;
+        }
+
+        .insight-badge.blocked {
+            background: rgba(239, 68, 68, 0.16);
+            color: #b91c1c;
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -655,7 +851,7 @@
             </div>
             <div class="checkbox-group">
                 <label class="checkbox-item">
-                    <input type="checkbox" id="includeReport" checked>
+                    <input type="checkbox" id="includeReport">
                     <span>리포트 생성 포함</span>
                 </label>
                 <label class="checkbox-item">
@@ -725,8 +921,10 @@
             <div class="tabs">
                 <button class="tab active" onclick="showTab('findings')">FINDINGS</button>
                 <button class="tab" onclick="showTab('measurements')">MEASUREMENTS</button>
+                <button class="tab" onclick="showTab('overlay')">🩻 OVERLAY</button>
                 <button class="tab" onclick="showTab('prior')">📊 PRIOR</button>
                 <button class="tab" onclick="showTab('report')">REPORT</button>
+                <button class="tab" onclick="showTab('insights')">🧠 INSIGHTS</button>
                 <button class="tab" onclick="showTab('qa')">💬 Q&A</button>
                 <button class="tab" onclick="showTab('json')">JSON</button>
             </div>
@@ -766,6 +964,71 @@
                         <tbody id="measurementsTable">
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Candidate Overlay -->
+            <div class="tab-content" id="overlayTab">
+                <div class="overlay-layout">
+                    <div class="overlay-panel">
+                        <div class="overlay-controls">
+                            <div class="overlay-control">
+                                <label>
+                                    <span>Slice</span>
+                                    <span id="overlaySliceValue">-</span>
+                                </label>
+                                <input type="range" id="overlaySlice" min="0" max="0" step="1" value="0" oninput="onOverlayControlChange('slice')">
+                            </div>
+                            <div class="overlay-control">
+                                <label>
+                                    <span>Window Preset</span>
+                                    <span id="overlayPresetValue">auto</span>
+                                </label>
+                                <select id="overlayPreset" onchange="onOverlayControlChange('preset')">
+                                    <option value="auto">Auto Contrast</option>
+                                    <option value="lung">Lung-like</option>
+                                    <option value="mediastinal">Mediastinal-like</option>
+                                </select>
+                            </div>
+                            <div class="overlay-control">
+                                <label>
+                                    <span>Conf Threshold</span>
+                                    <span id="overlayThresholdValue">0.30</span>
+                                </label>
+                                <input type="range" id="overlayThreshold" min="0" max="1" step="0.01" value="0.30" oninput="onOverlayControlChange('threshold')">
+                            </div>
+                            <div class="overlay-control">
+                                <label>
+                                    <span>Marker Size</span>
+                                    <span id="overlayMarkerSizeValue">9</span>
+                                </label>
+                                <input type="range" id="overlayMarkerSize" min="4" max="24" step="1" value="9" oninput="onOverlayControlChange('size')">
+                            </div>
+                            <div class="overlay-control">
+                                <label>
+                                    <span>Marker Opacity</span>
+                                    <span id="overlayOpacityValue">0.60</span>
+                                </label>
+                                <input type="range" id="overlayOpacity" min="0.10" max="1" step="0.05" value="0.60" oninput="onOverlayControlChange('opacity')">
+                            </div>
+                            <div class="overlay-control" style="display:flex; align-items:center;">
+                                <label style="margin:0;">
+                                    <input type="checkbox" id="overlayShowLabels" checked onchange="onOverlayControlChange('labels')">
+                                    Label 표시
+                                </label>
+                            </div>
+                        </div>
+                        <div class="overlay-canvas-wrap">
+                            <canvas id="overlayCanvas" width="512" height="512"></canvas>
+                        </div>
+                        <div class="overlay-status" id="overlayStatus">분석 후 실제 CT slice와 후보 마커가 표시됩니다.</div>
+                    </div>
+                    <div class="overlay-panel">
+                        <h4 style="margin-bottom: 0.75rem; color:#475569;"><i class="fas fa-crosshairs"></i> Visible Candidates</h4>
+                        <div class="overlay-list" id="overlayCandidateList">
+                            <div style="font-size:0.8rem; color:#94a3b8;">분석 결과를 기다리는 중...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -815,6 +1078,63 @@
                 <pre class="report-text" id="reportText"></pre>
             </div>
 
+            <!-- LLM Insights -->
+            <div class="tab-content" id="insightsTab">
+                <div class="insights-grid">
+                    <div class="insight-panel">
+                        <div class="insight-title">
+                            <i class="fas fa-lightbulb"></i> Why Cards (수치 근거 설명)
+                            <span id="whyCardsLlmBadge" class="insight-badge blocked">LLM?</span>
+                        </div>
+                        <div id="whyCardsContainer" class="why-card-list">
+                            <div style="font-size:0.8rem;color:#94a3b8;">분석 후 생성됩니다.</div>
+                        </div>
+                    </div>
+
+                    <div class="insight-panel">
+                        <div class="insight-title">
+                            <i class="fas fa-history"></i> Prior Delta Narrator
+                            <span id="priorDeltaLlmBadge" class="insight-badge blocked">LLM?</span>
+                        </div>
+                        <div id="priorDeltaNumeric" style="font-size:0.78rem;color:#64748b;margin-bottom:0.45rem;"></div>
+                        <div id="priorDeltaNarrative" class="insight-note">분석 후 과거 대비 설명이 표시됩니다.</div>
+                    </div>
+
+                    <div class="insight-panel">
+                        <div class="insight-title">
+                            <i class="fas fa-stethoscope"></i> Action Suggestion
+                            <span id="actionSuggestionGate" class="insight-badge ok">READY</span>
+                            <span id="actionSuggestionLlmBadge" class="insight-badge blocked">LLM?</span>
+                        </div>
+                        <div style="margin-bottom:0.5rem; display:flex; align-items:center; gap:0.5rem;">
+                            <label style="font-size:0.8rem;color:#475569;display:flex;align-items:center;gap:0.3rem;">
+                                <input type="checkbox" id="insightsLlmOnly" onchange="onInsightsModeChange()">
+                                LLM-Only mode
+                            </label>
+                            <span style="font-size:0.72rem;color:#94a3b8;">LLM 실패 시 fallback 금지</span>
+                        </div>
+                        <div id="actionSuggestionText" class="insight-note">Groundedness 결과에 따라 액션 제안이 표시됩니다.</div>
+                        <div style="margin-top:0.6rem; font-size:0.74rem; color:#64748b;">Generated by <span id="actionSuggestionGenerator">-</span></div>
+                        <div class="table-container" style="margin-top:0.5rem;">
+                            <table class="data-table" style="font-size:0.76rem;">
+                                <thead>
+                                    <tr>
+                                        <th>Nodule ID</th>
+                                        <th>Slice</th>
+                                        <th>Confidence</th>
+                                        <th>Prior Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="actionSourceTable">
+                                    <tr><td colspan="4" style="text-align:center;color:#94a3b8;">근거 데이터 대기 중</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- Q&A -->
             <div class="tab-content" id="qaTab">
                 <h4 style="margin-bottom: 1rem; color: #475569;"><i class="fas fa-robot"></i> 의사 Q&A (Solar Pro 3)</h4>
@@ -851,6 +1171,17 @@
     <script>
         const API_BASE = '';
         let lastAnalyzeResponse = null;
+        const overlayState = {
+            studyUid: null,
+            nodules: [],
+            sliceData: null,
+            selectedNoduleId: null,
+            currentSlice: 0,
+            requestSeq: 0
+        };
+        const insightsState = {
+            loadedRequestId: null
+        };
 
         // Check server status
         async function checkServerStatus() {
@@ -951,10 +1282,471 @@
             }
         }
 
+        function decodeBase64ToU8(base64Str) {
+            const binary = atob(base64Str);
+            const bytes = new Uint8ClampedArray(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes;
+        }
+
+        async function loadOverlaySlice(sliceIndex) {
+            if (!overlayState.studyUid) {
+                return;
+            }
+
+            const statusEl = document.getElementById('overlayStatus');
+            const seq = ++overlayState.requestSeq;
+            statusEl.textContent = 'Slice 로딩 중...';
+
+            try {
+                const preset = document.getElementById('overlayPreset').value || 'auto';
+                const response = await fetch(
+                    `/api/v1/lidc-slice/${encodeURIComponent(overlayState.studyUid)}?slice_index=${sliceIndex}&preset=${encodeURIComponent(preset)}`
+                );
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data?.detail || 'slice 로드 실패');
+                }
+
+                if (seq !== overlayState.requestSeq) {
+                    return;
+                }
+
+                overlayState.sliceData = data;
+                overlayState.currentSlice = data.slice_index;
+
+                const sliceSlider = document.getElementById('overlaySlice');
+                sliceSlider.min = 0;
+                sliceSlider.max = Math.max(0, (data.total_slices || 1) - 1);
+                sliceSlider.value = data.slice_index;
+
+                renderOverlay();
+            } catch (error) {
+                statusEl.textContent = `오버레이 로드 실패: ${error.message}`;
+                const list = document.getElementById('overlayCandidateList');
+                if (list) {
+                    list.innerHTML = '<div style="font-size:0.8rem;color:#ef4444;">오버레이 데이터를 불러오지 못했습니다.</div>';
+                }
+            }
+        }
+
+        function getOverlayControlValues() {
+            return {
+                threshold: parseFloat(document.getElementById('overlayThreshold').value || '0.3'),
+                markerSize: parseInt(document.getElementById('overlayMarkerSize').value || '9', 10),
+                opacity: parseFloat(document.getElementById('overlayOpacity').value || '0.6'),
+                showLabels: document.getElementById('overlayShowLabels').checked
+            };
+        }
+
+        function onOverlayControlChange(source) {
+            const sliceValue = parseInt(document.getElementById('overlaySlice').value || '0', 10);
+            const thresholdValue = parseFloat(document.getElementById('overlayThreshold').value || '0.3');
+            const markerSizeValue = parseInt(document.getElementById('overlayMarkerSize').value || '9', 10);
+            const opacityValue = parseFloat(document.getElementById('overlayOpacity').value || '0.6');
+            const presetValue = document.getElementById('overlayPreset').value || 'auto';
+
+            document.getElementById('overlaySliceValue').textContent = String(sliceValue);
+            document.getElementById('overlayThresholdValue').textContent = thresholdValue.toFixed(2);
+            document.getElementById('overlayMarkerSizeValue').textContent = String(markerSizeValue);
+            document.getElementById('overlayOpacityValue').textContent = opacityValue.toFixed(2);
+            document.getElementById('overlayPresetValue').textContent = presetValue;
+
+            if (source === 'slice' || source === 'preset') {
+                loadOverlaySlice(sliceValue);
+                return;
+            }
+            renderOverlay();
+        }
+
+        function oppositeAxisCode(code) {
+            const pairs = {
+                R: 'L', L: 'R',
+                A: 'P', P: 'A',
+                S: 'I', I: 'S'
+            };
+            return pairs[code] || '?';
+        }
+
+        function jumpToNodule(noduleId) {
+            const nodule = overlayState.nodules.find(n => n.id === noduleId);
+            if (!nodule) {
+                return;
+            }
+
+            overlayState.selectedNoduleId = noduleId;
+            const centerZ = Math.round(nodule.center_zyx?.[0] ?? 0);
+            document.getElementById('overlaySlice').value = centerZ;
+            onOverlayControlChange('slice');
+        }
+
+        function renderOverlayCandidateList(visibleNodules) {
+            const list = document.getElementById('overlayCandidateList');
+            if (!list) {
+                return;
+            }
+
+            if (!visibleNodules.length) {
+                list.innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;">현재 슬라이스/임계값에서 보이는 후보가 없습니다.</div>';
+                return;
+            }
+
+            const currentSlice = overlayState.currentSlice;
+            list.innerHTML = visibleNodules.map(n => {
+                const isActive = n.id === overlayState.selectedNoduleId;
+                const sliceRange = n.evidence?.slice_range || [0, 0];
+                const centerZ = Math.round(n.center_zyx?.[0] ?? 0);
+                return `
+                    <div class="overlay-item ${isActive ? 'active' : ''}" onclick="jumpToNodule('${n.id}')">
+                        <div class="overlay-item-title">
+                            <span>${n.id}</span>
+                            <span>${((n.confidence || 0) * 100).toFixed(0)}%</span>
+                        </div>
+                        <div class="overlay-item-meta">
+                            ${n.location_code || 'UNK'} | z=${centerZ} | range=${sliceRange[0]}-${sliceRange[1]} | now=${currentSlice}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderOverlay() {
+            const canvas = document.getElementById('overlayCanvas');
+            const statusEl = document.getElementById('overlayStatus');
+            if (!canvas || !overlayState.sliceData) {
+                return;
+            }
+
+            const { threshold, markerSize, opacity, showLabels } = getOverlayControlValues();
+            const ctx = canvas.getContext('2d');
+            const sliceData = overlayState.sliceData;
+            const width = sliceData.width;
+            const height = sliceData.height;
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const gray = decodeBase64ToU8(sliceData.pixel_data_b64);
+            if (gray.length !== width * height) {
+                statusEl.textContent = 'slice pixel 데이터가 손상되었습니다.';
+                return;
+            }
+
+            const image = ctx.createImageData(width, height);
+            for (let i = 0, j = 0; i < gray.length; i++, j += 4) {
+                const v = gray[i];
+                image.data[j] = v;
+                image.data[j + 1] = v;
+                image.data[j + 2] = v;
+                image.data[j + 3] = 255;
+            }
+            ctx.putImageData(image, 0, 0);
+
+            const currentSlice = overlayState.currentSlice;
+            const visible = overlayState.nodules.filter(n => {
+                const conf = n.confidence || 0;
+                if (conf < threshold) {
+                    return false;
+                }
+                const range = n.evidence?.slice_range || [0, 0];
+                return currentSlice >= range[0] - 1 && currentSlice <= range[1] + 1;
+            });
+
+            visible.forEach((n, idx) => {
+                const center = n.center_zyx || [0, 0, 0];
+                const y = center[1];
+                const x = center[2];
+                if (x < 0 || y < 0 || x >= width || y >= height) {
+                    return;
+                }
+
+                const radius = markerSize + Math.min(8, (n.diameter_mm || 0) * 0.35);
+                const isSelected = n.id === overlayState.selectedNoduleId || (!overlayState.selectedNoduleId && idx === 0);
+
+                ctx.strokeStyle = isSelected
+                    ? `rgba(16, 185, 129, ${opacity})`
+                    : `rgba(59, 130, 246, ${opacity})`;
+                ctx.fillStyle = isSelected
+                    ? `rgba(16, 185, 129, ${Math.min(0.3, opacity * 0.35)})`
+                    : `rgba(59, 130, 246, ${Math.min(0.2, opacity * 0.3)})`;
+                ctx.lineWidth = isSelected ? 2.4 : 1.8;
+
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(x - radius - 4, y);
+                ctx.lineTo(x + radius + 4, y);
+                ctx.moveTo(x, y - radius - 4);
+                ctx.lineTo(x, y + radius + 4);
+                ctx.stroke();
+
+                if (showLabels) {
+                    ctx.font = '12px monospace';
+                    const label = `${n.id} ${(n.confidence * 100).toFixed(0)}%`;
+                    const textX = Math.min(width - 120, x + radius + 6);
+                    const textY = Math.max(14, y - radius - 6);
+                    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+                    ctx.fillRect(textX - 3, textY - 11, Math.min(115, label.length * 7 + 8), 14);
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.fillText(label, textX, textY);
+                }
+            });
+
+            const orientation = Array.isArray(sliceData.orientation) ? sliceData.orientation : [];
+            if (orientation.length === 3) {
+                const axisY = String(orientation[1] || '?'); // up/down on image
+                const axisX = String(orientation[2] || '?'); // left/right on image
+                const topLabel = oppositeAxisCode(axisY);
+                const bottomLabel = axisY;
+                const leftLabel = oppositeAxisCode(axisX);
+                const rightLabel = axisX;
+
+                ctx.font = '13px monospace';
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
+                ctx.fillRect(8, 8, 32, 18);
+                ctx.fillRect(width - 40, 8, 32, 18);
+                ctx.fillRect(8, height - 26, 32, 18);
+                ctx.fillRect(width - 40, height - 26, 32, 18);
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillText(topLabel, 20, 21);
+                ctx.fillText(rightLabel, width - 28, 21);
+                ctx.fillText(leftLabel, 20, height - 13);
+                ctx.fillText(bottomLabel, width - 28, height - 13);
+            }
+
+            renderOverlayCandidateList(visible);
+            const winLow = Number.isFinite(sliceData.window_applied_low) ? sliceData.window_applied_low.toFixed(3) : '-';
+            const winHigh = Number.isFinite(sliceData.window_applied_high) ? sliceData.window_applied_high.toFixed(3) : '-';
+            const mode = sliceData.intensity_mode || 'unknown';
+            const orientationText = Array.isArray(sliceData.orientation) ? sliceData.orientation.join('/') : 'n/a';
+            statusEl.textContent = `Slice ${currentSlice}/${Math.max(0, (sliceData.total_slices || 1) - 1)} | visible=${visible.length} | mode=${mode} | orient=${orientationText} | window=[${winLow}, ${winHigh}]`;
+        }
+
+        function initializeOverlay(data) {
+            const aiResult = data?.structured_ai_result || {};
+            const studyUid = aiResult.study_uid || document.getElementById('studyUid').value || '';
+            const nodules = aiResult.nodules || [];
+            const sorted = [...nodules].sort((a, b) => (b.confidence || 0) - (a.confidence || 0));
+
+            overlayState.studyUid = studyUid;
+            overlayState.nodules = sorted;
+            overlayState.selectedNoduleId = sorted[0]?.id || null;
+            overlayState.sliceData = null;
+
+            const centerSlice = sorted.length
+                ? Math.max(0, Math.round(sorted[0].center_zyx?.[0] ?? 0))
+                : 0;
+
+            document.getElementById('overlaySlice').value = centerSlice;
+            document.getElementById('overlayPreset').value = 'auto';
+            document.getElementById('overlayThreshold').value = '0.30';
+            document.getElementById('overlayMarkerSize').value = '9';
+            document.getElementById('overlayOpacity').value = '0.60';
+            document.getElementById('overlayShowLabels').checked = true;
+
+            onOverlayControlChange('threshold');
+
+            if (!studyUid.startsWith('LIDC-IDRI-')) {
+                document.getElementById('overlayStatus').textContent = '현재는 LIDC 케이스에서만 실제 CT overlay를 지원합니다.';
+                document.getElementById('overlayCandidateList').innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;">지원되는 케이스가 아닙니다.</div>';
+                return;
+            }
+
+            loadOverlaySlice(centerSlice);
+        }
+
+        function escapeHtml(v) {
+            return String(v ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function setLlmBadge(elId, generatedByLlm) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            if (generatedByLlm) {
+                el.textContent = 'LLM';
+                el.className = 'insight-badge ok';
+            } else {
+                el.textContent = 'Fallback';
+                el.className = 'insight-badge blocked';
+            }
+        }
+
+        function isInsightsLlmOnly() {
+            const el = document.getElementById('insightsLlmOnly');
+            return !!(el && el.checked);
+        }
+
+        function onInsightsModeChange() {
+            if (lastAnalyzeResponse && lastAnalyzeResponse.structured_ai_result) {
+                loadInsights(lastAnalyzeResponse);
+            }
+        }
+
+        async function loadInsights(data) {
+            const aiResult = data?.structured_ai_result || null;
+            if (!aiResult) {
+                return;
+            }
+
+            const patientId = document.getElementById('patientId').value || aiResult.study_uid || null;
+            const llmOnly = isInsightsLlmOnly();
+            const payload = {
+                structured_ai_result: aiResult,
+                patient_id: patientId,
+                groundedness: data?.groundedness || null,
+                llm_only: llmOnly
+            };
+
+            document.getElementById('whyCardsContainer').innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;">Why card 생성 중...</div>';
+            document.getElementById('priorDeltaNarrative').textContent = 'Prior delta 생성 중...';
+            document.getElementById('actionSuggestionText').textContent = 'Action suggestion 생성 중...';
+            document.getElementById('actionSuggestionGenerator').textContent = '-';
+            document.getElementById('actionSourceTable').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">근거 데이터 로딩 중</td></tr>';
+
+            try {
+                const whyRes = await fetch('/api/v1/insights/why-cards', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...payload, top_k: 1 })
+                });
+                const whyData = await whyRes.json();
+                renderWhyCards(whyData);
+
+                const priorRes = await fetch('/api/v1/insights/prior-delta', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const priorData = await priorRes.json();
+                renderPriorDelta(priorData);
+
+                const actionRes = await fetch('/api/v1/insights/action-suggestion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const actionData = await actionRes.json();
+                renderActionSuggestion(actionData);
+
+            } catch (e) {
+                document.getElementById('whyCardsContainer').innerHTML = `<div style="font-size:0.8rem;color:#ef4444;">Why card 로드 실패: ${escapeHtml(e.message)}</div>`;
+                document.getElementById('priorDeltaNarrative').textContent = `Prior delta 로드 실패: ${e.message}`;
+                document.getElementById('actionSuggestionText').textContent = `Action suggestion 로드 실패: ${e.message}`;
+            }
+
+            insightsState.loadedRequestId = data?.request_id || null;
+        }
+
+        function renderWhyCards(data) {
+            const wrap = document.getElementById('whyCardsContainer');
+            const cards = data?.cards || [];
+            if (!cards.length) {
+                wrap.innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;">표시할 결절 후보가 없습니다.</div>';
+                setLlmBadge('whyCardsLlmBadge', false);
+                return;
+            }
+            const allLlm = cards.every(c => !!(c?.why?.generated_by_llm));
+            setLlmBadge('whyCardsLlmBadge', allLlm);
+            wrap.innerHTML = cards.map(c => {
+                const n = c.nodule || {};
+                const w = c.why || {};
+                return `
+                    <div class="why-card">
+                        <div class="why-card-head">
+                            <span>${escapeHtml(n.id || 'N?')} (${escapeHtml(n.location_code || 'UNK')})</span>
+                            <span>${((Number(n.confidence || 0)) * 100).toFixed(0)}%</span>
+                        </div>
+                        <div class="why-card-meta">
+                            diameter=${Number(n.diameter_mm || 0).toFixed(1)}mm | volume=${Number(n.volume_mm3 || 0).toFixed(1)}mm³ | slice=${escapeHtml((n.slice_range || []).join('-'))}
+                        </div>
+                        <ul>
+                            <li>${escapeHtml(w.clinical_reason || '-')}</li>
+                            <li>${escapeHtml(w.confidence_reason || '-')}</li>
+                            <li>${escapeHtml(w.risk_hint || '-')}</li>
+                        </ul>
+                        <div style="margin-top:0.45rem;font-size:0.72rem;color:#64748b;">
+                            Generated by ${escapeHtml(w.generator || 'unknown')} (${escapeHtml(w.status || 'unknown')})
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderPriorDelta(data) {
+            const numeric = data?.numeric || {};
+            const narrative = data?.narrative || {};
+
+            const hasPrior = !!numeric.has_prior;
+            const curr = numeric.current_largest_mm;
+            const prev = numeric.prior_largest_mm;
+            const dmm = numeric.delta_mm;
+            const dpc = numeric.delta_pct;
+            const changeType = numeric.change_type || narrative.change_type || 'UNKNOWN';
+            const date = numeric.prior_study_date || '-';
+
+            const numericLine = hasPrior
+                ? `prior_date=${date} | current=${curr ?? '-'}mm | prior=${prev ?? '-'}mm | delta=${dmm ?? '-'}mm (${dpc != null ? dpc.toFixed(1) + '%' : '-'}) | ${changeType}`
+                : `prior 없음 | current=${curr ?? '-'}mm | ${changeType}`;
+            document.getElementById('priorDeltaNumeric').textContent = numericLine;
+
+            const summary = narrative.summary || 'Prior 비교 요약이 없습니다.';
+            const note = narrative.clinical_note || '';
+            document.getElementById('priorDeltaNarrative').textContent = note ? `${summary}\n\n${note}` : summary;
+            setLlmBadge('priorDeltaLlmBadge', !!narrative.generated_by_llm);
+        }
+
+        function renderActionSuggestion(data) {
+            const gate = document.getElementById('actionSuggestionGate');
+            const text = document.getElementById('actionSuggestionText');
+            const srcBody = document.getElementById('actionSourceTable');
+
+            if (!data?.allowed) {
+                gate.textContent = 'BLOCKED';
+                gate.className = 'insight-badge blocked';
+                text.textContent = `Groundedness FAIL로 액션 제안을 숨김 처리했습니다. (${data?.reason || 'no reason'})`;
+                setLlmBadge('actionSuggestionLlmBadge', false);
+                document.getElementById('actionSuggestionGenerator').textContent = '-';
+                srcBody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">차단됨</td></tr>';
+                return;
+            }
+
+            gate.textContent = 'PASS';
+            gate.className = 'insight-badge ok';
+            const s = data?.suggestion || {};
+            text.textContent = `[${s.recommendation_level || 'monitor'}]\n${s.rationale || ''}\n${s.next_step || ''}`;
+            setLlmBadge('actionSuggestionLlmBadge', !!s.generated_by_llm);
+            document.getElementById('actionSuggestionGenerator').textContent = `${s.generator || 'unknown'} (${s.status || 'unknown'})`;
+
+            const rows = data?.source_rows || [];
+            if (!rows.length) {
+                srcBody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">근거 데이터 없음</td></tr>';
+            } else {
+                srcBody.innerHTML = rows.map(r => `
+                    <tr>
+                        <td>${escapeHtml(r.nodule_id || '-')}</td>
+                        <td>${escapeHtml(r.slice_range || '-')}</td>
+                        <td>${Number(r.confidence || 0).toFixed(2)}</td>
+                        <td>${escapeHtml(r.prior_date || '-')}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
         // Display results
         function displayResults(data) {
             document.getElementById('resultSection').classList.add('show');
             lastAnalyzeResponse = data;
+            insightsState.loadedRequestId = null;
             document.getElementById('saveVectorBtn').disabled = false;
             document.getElementById('vectorDbStatus').textContent = 'Vector DB 미저장';
             document.getElementById('vectorDbStatus').style.color = '#94a3b8';
@@ -1050,6 +1842,17 @@
 
             // Store AI results for Q&A
             window.currentAIResults = data.structured_ai_result;
+
+            // Initialize candidate overlay on real CT slice
+            initializeOverlay(data);
+            document.getElementById('whyCardsContainer').innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;">INSIGHTS 탭에서 수동으로 생성됩니다.</div>';
+            document.getElementById('priorDeltaNarrative').textContent = 'INSIGHTS 탭에서 수동으로 생성됩니다.';
+            document.getElementById('actionSuggestionText').textContent = 'INSIGHTS 탭에서 수동으로 생성됩니다.';
+            document.getElementById('actionSuggestionGenerator').textContent = '-';
+            document.getElementById('actionSourceTable').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">INSIGHTS 탭에서 생성</td></tr>';
+            setLlmBadge('whyCardsLlmBadge', false);
+            setLlmBadge('priorDeltaLlmBadge', false);
+            setLlmBadge('actionSuggestionLlmBadge', false);
             
             // Clear Q&A history
             document.getElementById('qaHistory').innerHTML = `
@@ -1231,6 +2034,15 @@
             
             document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
+
+            if (
+                tabName === 'insights' &&
+                lastAnalyzeResponse &&
+                lastAnalyzeResponse.structured_ai_result &&
+                insightsState.loadedRequestId !== (lastAnalyzeResponse.request_id || null)
+            ) {
+                loadInsights(lastAnalyzeResponse);
+            }
         }
 
         // LIDC manifest data

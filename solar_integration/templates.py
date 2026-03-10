@@ -218,7 +218,7 @@ class TemplateReportBuilder:
 
         scan_limitation = len(limitations_text) > 0
         return KeyFlags(
-            nodule_candidates=len(reportable_nodules),
+            nodule_candidates=len(ai_result.nodules),
             new_nodules=0,
             high_confidence_findings=high_conf_nodules + high_conf_other,
             scan_limitation=scan_limitation

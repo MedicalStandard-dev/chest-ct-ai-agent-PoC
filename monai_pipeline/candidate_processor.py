@@ -79,12 +79,12 @@ class CandidateComponent:
 class ThresholdPolicy:
     """후보 분류 임계값 정책"""
     # Heatmap peak threshold (높을수록 엄격)
-    peak_threshold: float = 0.97  # 0.95 → 0.97 (false positive 더 감소)
-    
+    peak_threshold: float = 0.15  # v4 model heatmap activation range에 맞춤
+
     # Confidence thresholds for status
-    finding_threshold: float = 0.7      # >= 0.7 → Findings 표
-    limitation_threshold: float = 0.4   # 0.4 ~ 0.7 → Limitations에만
-    hidden_threshold: float = 0.4       # < 0.4 → 숨김
+    finding_threshold: float = 0.25     # >= 0.25 → Findings 표
+    limitation_threshold: float = 0.10  # 0.10 ~ 0.25 → Limitations에만
+    hidden_threshold: float = 0.10      # < 0.10 → 숨김
     
     # Size filters
     min_diameter_mm: float = 3.0
@@ -96,7 +96,7 @@ class ThresholdPolicy:
     adaptive_threshold_ratio: float = 0.5  # 0.3 → 0.5 (더 tight한 component)
     
     # High-confidence threshold (Key Flags용)
-    high_confidence_threshold: float = 0.9  # 높은 신뢰도 기준
+    high_confidence_threshold: float = 0.35  # v4 model 기준 높은 신뢰도
     
     def classify(self, confidence: float, diameter_mm: float, voxel_count: int = 100) -> str:
         """후보 분류"""
@@ -542,15 +542,15 @@ class CandidateProcessor:
 def create_processor_from_config(config: Dict) -> CandidateProcessor:
     """설정에서 Processor 생성"""
     policy = ThresholdPolicy(
-        peak_threshold=config.get("peak_threshold", 0.97),
-        finding_threshold=config.get("finding_threshold", 0.7),
-        limitation_threshold=config.get("limitation_threshold", 0.4),
+        peak_threshold=config.get("peak_threshold", 0.15),
+        finding_threshold=config.get("finding_threshold", 0.25),
+        limitation_threshold=config.get("limitation_threshold", 0.10),
         min_diameter_mm=config.get("min_diameter_mm", 3.0),
         max_diameter_mm=config.get("max_diameter_mm", 30.0),
         min_voxel_count=config.get("min_voxel_count", 20),
         search_radius_mm=config.get("search_radius_mm", 15.0),
         adaptive_threshold_ratio=config.get("adaptive_threshold_ratio", 0.5),
-        high_confidence_threshold=config.get("high_confidence_threshold", 0.9)
+        high_confidence_threshold=config.get("high_confidence_threshold", 0.35)
     )
     
     return CandidateProcessor(policy=policy)

@@ -262,48 +262,83 @@ class LIDCPreprocessor:
             if not matched:
                 groups.append([nodule])
         
-        # Filter by agreement threshold
+        # Filter by agreement threshold and minimum diameter
+        min_diameter = self.config["min_diameter_mm"]
         aggregated = []
+        skipped_small = 0
         for group in groups:
             if len(group) >= threshold:
                 # Compute consensus values
                 centers = [n["center_zyx"] for n in group]
                 diameters = [n["diameter_mm"] for n in group]
-                
+                mean_diameter = float(np.mean(diameters))
+
+                # Skip nodules below minimum diameter
+                if mean_diameter < min_diameter:
+                    skipped_small += 1
+                    continue
+
                 aggregated.append({
                     "center_zyx": tuple(np.mean(centers, axis=0)),
-                    "diameter_mm": float(np.mean(diameters)),
+                    "diameter_mm": mean_diameter,
                     "agreement": len(group),
                     "reader_ids": [n["reader_id"] for n in group]
                 })
-        
+
+        if skipped_small > 0:
+            logger.info(
+                f"Filtered out {skipped_small} nodules with diameter < {min_diameter}mm"
+            )
+
         return aggregated
     
     def generate_heatmap(
         self,
         volume_shape: Tuple[int, int, int],
         nodule_centers: List[Tuple[float, float, float]],
-        spacing: Tuple[float, float, float]
+        spacing: Tuple[float, float, float],
+        diameters_mm: Optional[List[float]] = None
     ) -> np.ndarray:
-        """Generate Gaussian heatmap from nodule centers"""
+        """Generate Gaussian heatmap from nodule centers
+
+        Args:
+            volume_shape: (D, H, W)
+            nodule_centers: List of (z, y, x) voxel coordinates
+            spacing: (sz, sy, sx) in mm
+            diameters_mm: Per-nodule diameter in mm. When provided, sigma
+                is scaled proportionally (radius / 2) so larger nodules
+                produce wider Gaussians. Falls back to config gaussian_sigma.
+        """
         from scipy.ndimage import gaussian_filter
-        
+
         heatmap = np.zeros(volume_shape, dtype=np.float32)
-        sigma = self.config["gaussian_sigma"]
-        
-        for center in nodule_centers:
+        base_sigma = self.config["gaussian_sigma"]
+
+        if not nodule_centers:
+            return heatmap
+
+        # Per-nodule heatmap to allow different sigma per nodule
+        for idx, center in enumerate(nodule_centers):
             z, y, x = int(center[0]), int(center[1]), int(center[2])
-            
-            # Bounds check
-            if 0 <= z < volume_shape[0] and 0 <= y < volume_shape[1] and 0 <= x < volume_shape[2]:
-                heatmap[z, y, x] = 1.0
-        
-        if len(nodule_centers) > 0:
-            # Adjust sigma for spacing
-            sigma_voxels = tuple(sigma / s for s in spacing)
-            heatmap = gaussian_filter(heatmap, sigma=sigma_voxels)
-            heatmap = heatmap / (heatmap.max() + 1e-8)
-        
+
+            if not (0 <= z < volume_shape[0] and 0 <= y < volume_shape[1] and 0 <= x < volume_shape[2]):
+                continue
+
+            # Determine sigma for this nodule
+            if diameters_mm is not None and idx < len(diameters_mm):
+                # sigma_mm = radius / 2, clamped to [base_sigma, 3*base_sigma]
+                sigma_mm = max(base_sigma, min(diameters_mm[idx] / 4.0, base_sigma * 3.0))
+            else:
+                sigma_mm = base_sigma
+
+            sigma_voxels = tuple(sigma_mm / s for s in spacing)
+
+            single = np.zeros(volume_shape, dtype=np.float32)
+            single[z, y, x] = 1.0
+            single = gaussian_filter(single, sigma=sigma_voxels)
+            single = single / (single.max() + 1e-8)
+            heatmap = np.maximum(heatmap, single)
+
         return heatmap
     
     def process_case(
@@ -387,7 +422,8 @@ class LIDCPreprocessor:
         # Generate heatmap
         logger.info(f"Processing {case_id}: Generating heatmap...")
         centers = [n["center_zyx"] for n in nodules]
-        heatmap = self.generate_heatmap(volume_norm.shape, centers, new_spacing)
+        diameters = [n["diameter_mm"] for n in nodules]
+        heatmap = self.generate_heatmap(volume_norm.shape, centers, new_spacing, diameters_mm=diameters)
         
         # Save NIfTI files
         affine = np.eye(4)

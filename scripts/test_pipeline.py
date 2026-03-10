@@ -26,8 +26,8 @@ def test_with_real_data():
     logger.info("=" * 60)
     
     # 경로 설정
-    model_path = Path("models/nodule_det/best_nodule_det_model.pth")
-    data_dir = Path("data/processed/lidc")
+    model_path = Path("models/nodule_det_v4/best_nodule_det_model.pth")
+    data_dir = Path("data/LIDC-preprocessed-v2")
     output_dir = Path("outputs/pipeline_test")
     output_dir.mkdir(parents=True, exist_ok=True)
     

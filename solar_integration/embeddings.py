@@ -1,7 +1,7 @@
 # solar_integration/embeddings.py
 """
-Solar Embedding API client for RAG retrieval
-SOLAR_API_KEY 없으면 deterministic mock 사용
+Upstage Solar Embedding API client for RAG retrieval
+UPSTAGE_API_KEY 없으면 deterministic mock 사용
 """
 from typing import List, Optional
 import hashlib
@@ -12,23 +12,23 @@ from utils.logger import logger
 
 
 class SolarEmbeddingClient:
-    """Solar Embedding API wrapper"""
-    
+    """Upstage Solar Embedding API wrapper"""
+
     def __init__(self, api_key: Optional[str] = None, use_mock: bool = False):
         """
         Args:
-            api_key: Solar API key
+            api_key: Upstage API key
             use_mock: True면 mock embedding 강제 사용
         """
-        self.api_key = api_key or getattr(settings, "solar_api_key", None)
-        self.endpoint = getattr(settings, "solar_api_endpoint", "https://api.upstage.ai/v1")
-        self.model = getattr(settings, "solar_embedding_model", "upstage/solar-embedding-1-large")
+        self.api_key = api_key or getattr(settings, "upstage_api_key", None)
+        self.endpoint = getattr(settings, "upstage_api_endpoint", "https://api.upstage.ai/v1/solar")
+        self.model = getattr(settings, "upstage_embedding_model", "solar-embedding-1-large")
         self.use_mock = use_mock or (not settings.should_use_real_embedding)
-        
+
         if self.use_mock:
-            logger.warning("Solar Embedding: Using MOCK mode (deterministic)")
+            logger.warning("Upstage Embedding: Using MOCK mode (deterministic)")
         else:
-            logger.info("Solar Embedding: Using REAL API")
+            logger.info("Upstage Embedding: Using REAL API")
     
     async def embed_texts(self, texts: List[str]) -> List[List[float]]:
         """
@@ -52,13 +52,13 @@ class SolarEmbeddingClient:
             except Exception:
                 response_text = ""
             logger.error(
-                "Solar Embedding API failed: {} | response={}",
+                "Upstage Embedding API failed: {} | response={}",
                 str(e),
                 response_text[:1000]
             )
             return self._mock_embed(texts)
         except Exception as e:
-            logger.error(f"Solar Embedding API failed: {e}, falling back to mock")
+            logger.error(f"Upstage Embedding API failed: {e}, falling back to mock")
             return self._mock_embed(texts)
     
     async def embed_single(self, text: str) -> List[float]:
@@ -67,7 +67,7 @@ class SolarEmbeddingClient:
         return embeddings[0]
     
     async def _real_embed(self, texts: List[str]) -> List[List[float]]:
-        """실제 Solar Embedding API 호출"""
+        """실제 Upstage Embedding API 호출"""
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
@@ -89,7 +89,7 @@ class SolarEmbeddingClient:
             result = response.json()
             embeddings = [item["embedding"] for item in result.get("data", [])]
             
-            logger.info(f"Solar Embedding: Generated {len(embeddings)} embeddings")
+            logger.info(f"Upstage Embedding: Generated {len(embeddings)} embeddings")
             return embeddings
     
     def _mock_embed(self, texts: List[str]) -> List[List[float]]:
@@ -118,13 +118,13 @@ class SolarEmbeddingClient:
     
     def get_embedding_dim(self) -> int:
         """Embedding 차원 반환"""
-        return 1024
+        return 4096 if not self.use_mock else 1024
     
     def get_model_info(self) -> dict:
         """모델 정보 반환"""
         return {
-            "provider": "Solar" if not self.use_mock else "Mock",
-            "model": "solar-embedding-1-large" if not self.use_mock else "deterministic-hash",
+            "provider": "Upstage" if not self.use_mock else "Mock",
+            "model": self.model if not self.use_mock else "deterministic-hash",
             "dimension": self.get_embedding_dim(),
             "mode": "mock" if self.use_mock else "real"
         }
