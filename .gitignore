@@ -42,6 +42,7 @@ env/
 *.env
 
 # Data (large files)
+data/
 data/raw/
 data/processed/
 data/LIDC-IDRI/
